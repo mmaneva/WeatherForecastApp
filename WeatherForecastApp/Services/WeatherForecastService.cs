@@ -47,7 +47,7 @@ namespace WeatherForecastApp.Services
 
             await _weatherContext.SaveChangesAsync();
 
-            return weatherDto
+            return weatherDto;
         }
 
         public DateTime UnixTimeToDateTime(long unixtime)

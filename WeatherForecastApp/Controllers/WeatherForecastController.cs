@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WeatherForecastApp.Services;
 
 namespace WeatherForecastApp.Controllers
 {
@@ -11,5 +12,18 @@ namespace WeatherForecastApp.Controllers
     [ApiController]
     public class WeatherForecastController : ControllerBase
     {
+        private readonly IWeatherForecastService _weatherForecastService;
+
+        public WeatherForecastController(IWeatherForecastService weatherForecastService)
+        {
+            _weatherForecastService = weatherForecastService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery] string city, [FromQuery] DateTime date, [FromQuery] string language)
+        {
+            WeatherDto weather = await _weatherService.GetWeatherAsync(city, date, language);
+            return Ok(weather);
+        }
     }
 }

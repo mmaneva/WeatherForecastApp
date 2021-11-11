@@ -7,6 +7,6 @@ namespace WeatherForecastApp.Models.DbStorage
         public int Id { get; set; }
         public string CityName { get; set; }
         public DateTime? Date { get; set; }
-        public DateTime? Time { get; set; }
+        public TimeSpan? Time { get; set; }
     }
 }

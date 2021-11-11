@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WeatherForecastApp.Models.WeatherForecastResponse;
 using WeatherForecastApp.Services;
 
 namespace WeatherForecastApp.Controllers
@@ -22,7 +23,7 @@ namespace WeatherForecastApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] string city, [FromQuery] DateTime date, [FromQuery] string language)
         {
-            WeatherDto weather = await _weatherService.GetWeatherAsync(city, date, language);
+            WeatherDto weather = await _weatherForecastService.GetWeatherForecastAsync(city, date, language);
             return Ok(weather);
         }
     }

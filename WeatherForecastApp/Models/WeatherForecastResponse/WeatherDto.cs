@@ -5,5 +5,7 @@
         public string city { get; set; }
 
         public double temp { get; set; }
+
+        public double tomorrowTemp { get; set; }
     }
 }

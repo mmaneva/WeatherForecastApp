@@ -24,24 +24,25 @@ namespace WeatherForecastApp.Services
         {
             string IDWeather = Constants.OPEN_WEATHER_APPID;
 
-            var URL = $"http://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&APPID={IDWeather}";
+            var URL = $"http://api.openweathermap.org/data/2.5/forecast/daily?q={city}&units=metric&cnt={7}&appid={IDWeather}";
 
             HttpResponseMessage responseThirdParty = await httpClient.GetAsync(URL);
 
             string responseBody = await responseThirdParty.Content.ReadAsStringAsync();
 
-            WeatherResponse jsonResponse = JsonConvert.DeserializeObject<WeatherResponse>(responseBody);
+            Root jsonResponse = JsonConvert.DeserializeObject<Root>(responseBody);
 
             WeatherDto weatherDto = new WeatherDto();
 
-            weatherDto.city = jsonResponse.Name;
-            weatherDto.temp = jsonResponse.Main.temp;
+            weatherDto.city = jsonResponse.city.name;
+            weatherDto.temp = jsonResponse.list[0].temp.day;
+            weatherDto.tomorrowTemp = jsonResponse.list[1].temp.day;
 
             SearchCity dbCity = new SearchCity
             {
-                CityName = jsonResponse.Name,
-                Date = UnixTimeToDateTime(jsonResponse.Dt),
-                Time = UnixTimeToDateTime(jsonResponse.Dt).TimeOfDay
+                CityName = city,
+                Date = UnixTimeToDateTime(jsonResponse.list[0].dt),
+                Time = UnixTimeToDateTime(jsonResponse.list[0].dt).TimeOfDay
             };
 
             await _weatherContext.AddAsync(dbCity);

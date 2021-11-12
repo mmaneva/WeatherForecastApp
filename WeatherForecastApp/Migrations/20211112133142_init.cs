@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WeatherForecastApp.Migrations
 {
-    public partial class WeatherForecastAppModelsDbStorageWeatherContext : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,7 +11,7 @@ namespace WeatherForecastApp.Migrations
                 name: "DaysOfWeek",
                 columns: table => new
                 {
-                    DayId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Day = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LanguageDay = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
@@ -19,17 +19,18 @@ namespace WeatherForecastApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DaysOfWeek", x => x.DayId);
+                    table.PrimaryKey("PK_DaysOfWeek", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "SearchCity",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CityName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Date = table.Column<DateTime>(type: "date", nullable: true),
-                    Time = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Time = table.Column<TimeSpan>(type: "time", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -40,7 +41,8 @@ namespace WeatherForecastApp.Migrations
                 name: "WeatherInfo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Temperatura = table.Column<decimal>(type: "decimal(18,0)", nullable: true),
                     Temp_min = table.Column<decimal>(type: "decimal(18,0)", nullable: true),
                     Temp_max = table.Column<decimal>(type: "decimal(18,0)", nullable: true),
@@ -53,7 +55,7 @@ namespace WeatherForecastApp.Migrations
                         name: "FK__Weather__dayId__36B12243",
                         column: x => x.dayId,
                         principalTable: "DaysOfWeek",
-                        principalColumn: "DayId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 

@@ -35,6 +35,7 @@ namespace WeatherForecastApp.Services
             WeatherDto weatherDto = new WeatherDto();
 
             weatherDto.city = jsonResponse.Name;
+            weatherDto.temp = jsonResponse.Main.temp;
 
             SearchCity dbCity = new SearchCity
             {

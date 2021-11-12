@@ -26,7 +26,7 @@ namespace WeatherForecastApp.Models.DbStorage
             {
                 entity.ToTable("SearchCity");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.CityName)
                 .IsRequired()
@@ -40,7 +40,7 @@ namespace WeatherForecastApp.Models.DbStorage
             {
                 entity.ToTable("DaysOfWeek");
 
-                entity.Property(e => e.Id).HasColumnName("DayId");
+                entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Day)
                 .IsRequired()
@@ -56,7 +56,7 @@ namespace WeatherForecastApp.Models.DbStorage
             {
                 entity.ToTable("WeatherInfo");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.DayId).HasColumnName("dayId");
 

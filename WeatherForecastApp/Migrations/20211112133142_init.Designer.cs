@@ -10,8 +10,8 @@ using WeatherForecastApp.Models.DbStorage;
 namespace WeatherForecastApp.Migrations
 {
     [DbContext(typeof(WeatherContext))]
-    [Migration("20211111180524_WeatherForecastApp.Models.DbStorage.ChangeDataType")]
-    partial class WeatherForecastAppModelsDbStorageChangeDataType
+    [Migration("20211112133142_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,7 +27,6 @@ namespace WeatherForecastApp.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("DayId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Day")
@@ -52,7 +51,9 @@ namespace WeatherForecastApp.Migrations
             modelBuilder.Entity("WeatherForecastApp.Models.DbStorage.SearchCity", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CityName")
                         .IsRequired()
@@ -74,7 +75,9 @@ namespace WeatherForecastApp.Migrations
             modelBuilder.Entity("WeatherForecastApp.Models.DbStorage.WeatherInfo", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("DayId")
                         .HasColumnType("int")

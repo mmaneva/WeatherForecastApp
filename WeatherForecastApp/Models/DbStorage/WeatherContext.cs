@@ -50,6 +50,23 @@ namespace WeatherForecastApp.Models.DbStorage
                 entity.Property(e => e.LanguageDay)
                 .IsRequired()
                 .HasMaxLength(50);
+
+                entity.HasData(
+                    new DaysOfWeek { Id = 1, Day = "Monday", LanguageDay = "en", OrderNumber = 1 },
+                    new DaysOfWeek { Id = 2, Day = "Понеделник", LanguageDay = "mk", OrderNumber = 1 },
+                    new DaysOfWeek { Id = 3, Day = "Tuesday", LanguageDay = "en", OrderNumber = 2 },
+                    new DaysOfWeek { Id = 4, Day = "Вторник", LanguageDay = "mk", OrderNumber = 2 },
+                    new DaysOfWeek { Id = 5, Day = "Wednesday", LanguageDay = "en", OrderNumber = 3 },
+                    new DaysOfWeek { Id = 6, Day = "Среда", LanguageDay = "mk", OrderNumber = 3 },
+                    new DaysOfWeek { Id = 7, Day = "Thurstdau", LanguageDay = "en", OrderNumber = 4 },
+                    new DaysOfWeek { Id = 8, Day = "Четврток", LanguageDay = "mk", OrderNumber = 4 },
+                    new DaysOfWeek { Id = 9, Day = "Friday", LanguageDay = "en", OrderNumber = 5 },
+                    new DaysOfWeek { Id = 10, Day = "Петок", LanguageDay = "mk", OrderNumber = 5 },
+                    new DaysOfWeek { Id = 11, Day = "Saturday", LanguageDay = "en", OrderNumber = 6 },
+                    new DaysOfWeek { Id = 12, Day = "Сабота", LanguageDay = "mk", OrderNumber = 6 },
+                    new DaysOfWeek { Id = 13, Day = "Sunday", LanguageDay = "en", OrderNumber = 7 },
+                    new DaysOfWeek { Id = 14, Day = "Недела", LanguageDay = "mk", OrderNumber = 7 }
+                    );
             });
 
             modelBuilder.Entity<WeatherInfo>(entity =>

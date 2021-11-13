@@ -21,9 +21,9 @@ namespace WeatherForecastApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] string city, [FromQuery] DateTime date, [FromQuery] string language)
+        public async Task<IActionResult> Get([FromQuery] string city, [FromQuery] DateTime? date, [FromQuery] string language="en")
         {
-            WeatherDto weather = await _weatherForecastService.GetWeatherForecastAsync(city, date, language);
+            List<WeatherDto> weather = await _weatherForecastService.GetWeatherForecastAsync(city, date, language);
             return Ok(weather);
         }
     }

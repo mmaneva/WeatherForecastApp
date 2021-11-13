@@ -14,28 +14,12 @@ namespace WeatherForecastApp.Models.DbStorage
 
         }
 
-        public virtual DbSet<SearchCity> SearchCities { get; set; }
         public virtual DbSet<DaysOfWeek> DaysOfWeeks { get; set; }
         public virtual DbSet<WeatherInfo> WeatherInfos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
-
-            modelBuilder.Entity<SearchCity>(entity =>
-            {
-                entity.ToTable("SearchCity");
-
-                entity.HasKey(e => e.Id);
-
-                entity.Property(e => e.CityName)
-                .IsRequired()
-                .HasMaxLength(50)
-                .HasColumnName("CityName");
-
-                entity.Property(e => e.Date).HasColumnType("date");
-            });
-
             modelBuilder.Entity<DaysOfWeek>(entity =>
             {
                 entity.ToTable("DaysOfWeek");

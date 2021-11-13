@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WeatherForecastApp.Config;
@@ -20,7 +22,7 @@ namespace WeatherForecastApp.Services
 
         HttpClient httpClient = new HttpClient();
 
-        public async Task<WeatherDto> GetWeatherForecastAsync(string city, DateTime date, string language)
+        public async Task<List<WeatherDto>> GetWeatherForecastAsync(string city, DateTime? date, string language)
         {
             string IDWeather = Constants.OPEN_WEATHER_APPID;
 
@@ -32,20 +34,63 @@ namespace WeatherForecastApp.Services
 
             Root jsonResponse = JsonConvert.DeserializeObject<Root>(responseBody);
 
-            WeatherDto weatherDto = new WeatherDto();
+            List<WeatherDto> weatherDto = new List<WeatherDto>();
 
-            weatherDto.city = jsonResponse.city.name;
-            weatherDto.temp = jsonResponse.list[0].temp.day;
-            weatherDto.tomorrowTemp = jsonResponse.list[1].temp.day;
+            if (!date.HasValue)
+            {   
+                for(int i = 0; i < 3; i++)
+                {
+                    DateTime dt = UnixTimeToDateTime(jsonResponse.list[i].dt).AddDays(i);
+                    int dayNumber = (int)dt.DayOfWeek;
+                    DaysOfWeek daysOfWeek = _weatherContext.DaysOfWeeks.Where(x => x.OrderNumber == dayNumber & language == x.LanguageDay).FirstOrDefault();
 
-            SearchCity dbCity = new SearchCity
+                    weatherDto.Add(new WeatherDto { city = jsonResponse.city.name, temp = jsonResponse.list[i].temp.day });
+
+                    if (daysOfWeek != null)
+                    {
+
+                        WeatherInfo dbweatherInfo = new WeatherInfo
+                        {
+                            CityName = city,
+                            Date = dt,
+                            Temperatura = jsonResponse.list[i].temp.day,
+                            TempMax = jsonResponse.list[i].temp.max,
+                            TempMin = jsonResponse.list[i].temp.min,
+                            DayId = daysOfWeek.Id
+                        };
+
+                        await _weatherContext.AddAsync(dbweatherInfo);
+                    }
+                    
+                }
+            }
+            else
             {
-                CityName = city,
-                Date = UnixTimeToDateTime(jsonResponse.list[0].dt),
-                Time = UnixTimeToDateTime(jsonResponse.list[0].dt).TimeOfDay
-            };
+                for (int i = 0; i < 7; i++)
+                {
+                    DateTime dt = UnixTimeToDateTime(jsonResponse.list[i].dt).AddDays(i);
+                    int dayNumber = (int)dt.DayOfWeek;
+                    DaysOfWeek daysOfWeek = _weatherContext.DaysOfWeeks.Where(x => x.OrderNumber == dayNumber & language == x.LanguageDay).FirstOrDefault();
 
-            await _weatherContext.AddAsync(dbCity);
+                    weatherDto.Add(new WeatherDto { city = jsonResponse.city.name, temp = jsonResponse.list[i].temp.day });
+
+                    if (daysOfWeek != null)
+                    {
+
+                        WeatherInfo dbweatherInfo = new WeatherInfo
+                        {
+                            CityName = city,
+                            Date = dt,
+                            Temperatura = jsonResponse.list[i].temp.day,
+                            TempMax = jsonResponse.list[i].temp.max,
+                            TempMin = jsonResponse.list[i].temp.min,
+                            DayId = daysOfWeek.Id
+                        };
+
+                        await _weatherContext.AddAsync(dbweatherInfo);
+                    }
+                }
+            }
 
             await _weatherContext.SaveChangesAsync();
 
